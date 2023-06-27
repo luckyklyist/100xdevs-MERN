@@ -29,6 +29,14 @@ app.post("/admin/login", (req, res) => {
   // logic to log in admin
   try{
     const {username,password}=req.body;
+    ADMINS.map((admin)=>{
+      if(admin.username===username && admin.password===password){
+        res.send({message:"logged in "})
+      }
+      else{
+        res.send({message:"user not found"})
+      }
+    })
   }
   catch(err){
     console.log(err);
@@ -69,6 +77,6 @@ app.get("/users/purchasedCourses", (req, res) => {
   // logic to view purchased courses
 });
 
-app.listen(3000, () => {
+app.listen(3002, () => {
   console.log("Server is listening on port 3000");
 });
