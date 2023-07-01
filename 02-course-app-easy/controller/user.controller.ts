@@ -33,16 +33,13 @@ const signUpAdmin = async (req: Request, res: Response): Promise<Response> => {
 const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { username, password } = req.body;
-        ADMINS.map((admin) => {
-            if (admin.username === username && admin.password === password) {
-                res.header("username",admin.username);
-                res.header("password",admin.password);
-                return res.send({ message: "logged in " })
-            }
+        const isAdmin = ADMINS.some((admin) => admin.username === username && admin.password === password);
+        if (isAdmin) {
+            res.set({ "username": username, "password": password });
+            return res.send({ message: "logged in" });
+        } else {
+            return res.status(404).send({ message: "user not found" });
         }
-        )
-        return res.send({ message: "user not found" })
-
     }
     catch (err) {
         console.log(err);
@@ -50,4 +47,4 @@ const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
     }
 }
 
-export { signUpAdmin, loginAdmin };
+export { signUpAdmin, loginAdmin, ADMINS, USERS };
